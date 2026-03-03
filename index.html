@@ -1,11 +1,705 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>Iframe Embedding Example</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyan256X | 个人博客</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* 蓝色系配色方案 */
+        :root {
+            --primary-blue: #1e3a8a;
+            --secondary-blue: #3b82f6;
+            --accent-blue: #60a5fa;
+            --light-blue: #dbeafe;
+            --dark-blue: #1e40af;
+            --text-dark: #1f2937;
+            --text-light: #f8fafc;
+            --bg-white: #ffffff;
+            --bg-gray: #f9fafb;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: linear-gradient(135deg, var(--bg-gray) 0%, var(--light-blue) 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* 导航栏 */
+        .navbar {
+            background: linear-gradient(90deg, var(--primary-blue) 0%, var(--dark-blue) 100%);
+            color: var(--text-light);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            color: var(--accent-blue);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-blue);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* 英雄区域 */
+        .hero {
+            padding: 4rem 0;
+            text-align: center;
+            background: linear-gradient(135deg, var(--secondary-blue) 0%, var(--primary-blue) 100%);
+            color: var(--text-light);
+            border-radius: 0 0 20px 20px;
+            margin-bottom: 3rem;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 5px solid var(--accent-blue);
+            margin: 0 auto 2rem;
+            background: var(--bg-white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: var(--primary-blue);
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* 主要内容区域 */
+        .main-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 3rem;
+            margin-bottom: 4rem;
+        }
+
+        .section {
+            background: var(--bg-white);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .section-title {
+            color: var(--primary-blue);
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--accent-blue);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* 项目展示 */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .project-card {
+            background: var(--bg-gray);
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-left: 4px solid var(--secondary-blue);
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .project-title {
+            color: var(--dark-blue);
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .project-description {
+            color: var(--text-dark);
+            opacity: 0.8;
+            margin-bottom: 1rem;
+        }
+
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .tech-tag {
+            background: var(--light-blue);
+            color: var(--primary-blue);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* 侧边栏 */
+        .sidebar-section {
+            margin-bottom: 2rem;
+        }
+
+        .skills-list {
+            list-style: none;
+        }
+
+        .skills-list li {
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .skill-bar {
+            width: 60%;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .skill-level {
+            height: 100%;
+            background: linear-gradient(90deg, var(--secondary-blue) 0%, var(--accent-blue) 100%);
+            border-radius: 4px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .social-link {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--primary-blue);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-size: 1.2rem;
+        }
+
+        .social-link:hover {
+            background: var(--secondary-blue);
+            transform: scale(1.1);
+        }
+
+        /* 博客文章 */
+        .blog-post {
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .blog-post:last-child {
+            border-bottom: none;
+        }
+
+        .post-title {
+            color: var(--dark-blue);
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .post-meta {
+            color: #6b7280;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .post-excerpt {
+            color: var(--text-dark);
+            line-height: 1.7;
+        }
+
+        .read-more {
+            display: inline-block;
+            margin-top: 1rem;
+            color: var(--secondary-blue);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .read-more:hover {
+            color: var(--primary-blue);
+        }
+
+        /* 页脚 */
+        .footer {
+            background: var(--primary-blue);
+            color: var(--text-light);
+            padding: 3rem 0;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-section h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent-blue);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .footer-links a:hover {
+            opacity: 1;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 0.7;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* 动画效果 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+    </style>
 </head>
 <body>
-    <!-- 替换下面的URL为安全的链接 -->
-    <iframe src="https://corn186.rth10.com/" style="width: 100%; height: 100vh; border: none;"></iframe>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <div class="logo">
+                <i class="fas fa-code"></i>
+                <span>Cyan256X</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home"><i class="fas fa-home"></i> 首页</a></li>
+                <li><a href="#projects"><i class="fas fa-project-diagram"></i> 项目</a></li>
+                <li><a href="#blog"><i class="fas fa-blog"></i> 博客</a></li>
+                <li><a href="#about"><i class="fas fa-user"></i> 关于</a></li>
+                <li><a href="#contact"><i class="fas fa-envelope"></i> 联系</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- 英雄区域 -->
+    <section class="hero" id="home">
+        <div class="container hero-content fade-in">
+            <div class="avatar">
+                <i class="fas fa-user-astronaut"></i>
+            </div>
+            <h1>Cyan256X</h1>
+            <p>开发者 | 技术爱好者 | 创意实践者</p>
+            <p>欢迎来到我的个人空间，这里记录了我的学习历程、项目经验和思考分享</p>
+            <div class="social-links">
+                <a href="https://github.com/Cyan256X" class="social-link" target="_blank">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="#" class="social-link">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" class="social-link">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+                <a href="#" class="social-link">
+                    <i class="fas fa-envelope"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 主要内容 -->
+    <div class="container main-content">
+        <!-- 左侧：项目和博客 -->
+        <div class="left-column">
+            <!-- 项目展示 -->
+            <section class="section fade-in" id="projects">
+                <h2 class="section-title">
+                    <i class="fas fa-rocket"></i> 我的项目
+                </h2>
+                <div class="projects-grid">
+                    <div class="project-card">
+                        <h3 class="project-title">
+                            <i class="fas fa-music"></i> MusiCalculator
+                        </h3>
+                        <p class="project-description">一个带有音效的计算器，每个数字按键都会发出不同的音调，让计算变得有趣。</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">HTML</span>
+                            <span class="tech-tag">CSS</span>
+                            <span class="tech-tag">JavaScript</span>
+                            <span class="tech-tag">Web Audio API</span>
+                        </div>
+                        <a href="./Musicalculator/" class="read-more">查看项目 →</a>
+                    </div>
+
+                    <div class="project-card">
+                        <h3 class="project-title">
+                            <i class="fas fa-gamepad"></i> 互动游戏集
+                        </h3>
+                        <p class="project-description">包含多个小游戏和互动页面的集合，展示前端交互技术的应用。</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">HTML5</span>
+                            <span class="tech-tag">CSS3</span>
+                            <span class="tech-tag">JavaScript</span>
+                            <span class="tech-tag">Canvas</span>
+                        </div>
+                        <a href="./hit/" class="read-more">探索游戏 →</a>
+                    </div>
+
+                    <div class="project-card">
+                        <h3 class="project-title">
+                            <i class="fas fa-robot"></i> Discord 句子生成器
+                        </h3>
+                        <p class="project-description">一个有趣的 Discord 界面聊天生成器，可以创建逼真的对话截图。</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">前端开发</span>
+                            <span class="tech-tag">UI/UX</span>
+                            <span class="tech-tag">图像生成</span>
+                        </div>
+                        <a href="https://github.com/Cyan256X/Discord-Sentence-Generator" class="read-more" target="_blank">GitHub 仓库 →</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 博客文章 -->
+            <section class="section fade-in" id="blog">
+                <h2 class="section-title">
+                    <i class="fas fa-pen-fancy"></i> 最新文章
+                </h2>
+                <div class="blog-post">
+                    <h3 class="post-title">如何创建一个有趣的交互式计算器</h3>
+                    <div class="post-meta">
+                        <span><i class="far fa-calendar"></i> 2024年3月3日</span>
+                        <span><i class="far fa-folder"></i> 前端开发</span>
+                    </div>
+                    <p class="post-excerpt">在这篇文章中，我将分享如何为传统计算器添加音效功能，让枯燥的计算过程变得生动有趣。我们将使用 Web Audio API 和 JavaScript 实现...</p>
+                    <a href="#" class="read-more">阅读全文 →</a>
+                </div>
+
+                <div class="blog-post">
+                    <h3 class="post-title">GitHub Pages 部署完全指南</h3>
+                    <div class="post-meta">
+                        <span><i class="far fa-calendar"></i> 2024年2月28日</span>
+                        <span><i class="far fa-folder"></i> 部署运维</span>
+                    </div>
+                    <p class="post-excerpt">从零开始学习如何使用 GitHub Pages 部署静态网站，包括自定义域名、HTTPS 配置、自动化部署等高级技巧...</p>
+                    <a href="#" class="read-more">阅读全文 →</a>
+                </div>
+
+                <div class="blog-post">
+                    <h3 class="post-title">前端动画性能优化实践</h3>
+                    <div class="post-meta">
+                        <span><i class="far fa-calendar"></i> 2024年2月20日</span>
+                        <span><i class="far fa-folder"></i> 性能优化</span>
+                    </div>
+                    <p class="post-excerpt">探讨如何在前端项目中实现流畅的动画效果，同时保持优秀的性能表现。包括 CSS 动画、JavaScript 动画和 WebGL 的对比...</p>
+                    <a href="#" class="read-more">阅读全文 →</a>
+                </div>
+            </section>
+        </div>
+
+        <!-- 右侧：侧边栏 -->
+        <div class="right-column">
+            <!-- 关于我 -->
+            <section class="section sidebar-section fade-in" id="about">
+                <h2 class="section-title">
+                    <i class="fas fa-user-circle"></i> 关于我
+                </h2>
+                <p>一名热爱技术的开发者，专注于前端开发和创意编程。喜欢将有趣的想法转化为实际的代码项目。</p>
+                <p>目前主要探索的方向：</p>
+                <ul class="skills-list">
+                    <li>交互式 Web 应用</li>
+                    <li>游戏化学习工具</li>
+                    <li>创意编程项目</li>
+                </ul>
+            </section>
+
+            <!-- 技能 -->
+            <section class="section sidebar-section fade-in">
+                <h2 class="section-title">
+                    <i class="fas fa-tools"></i> 技能栈
+                </h2>
+                <ul class="skills-list">
+                    <li>
+                        <span>HTML/CSS</span>
+                        <div class="skill-bar">
+                            <div class="skill-level" style="width: 90%"></div>
+                        </div>
+                    </li>
+                    <li>
+                        <span>JavaScript</span>
+                        <div class="skill-bar">
+                            <div class="skill-level" style="width: 85%"></div>
+                        </div>
+                    </li>
+                    <li>
+                        <span>前端框架</span>
+                        <div class="skill-bar">
+                            <div class="skill-level" style="width: 75%"></div>
+                        </div>
+                    </li>
+                    <li>
+                        <span>Git/GitHub</span>
+                        <div class="skill-bar">
+                            <div class="skill-level" style="width: 80%"></div>
+                        </div>
+                    </li>
+                    <li>
+                        <span>UI/UX 设计</span>
+                        <div class="skill-bar">
+                            <div class="skill-level" style="width: 70%"></div>
+                        </div>
+                    </li>
+                </ul>
+            </section>
+
+            <!-- 联系 -->
+            <section class="section sidebar-section fade-in" id="contact">
+                <h2 class="section-title">
+                    <i class="fas fa-paper-plane"></i> 联系我
+                </h2>
+                <p>如果你对我的项目感兴趣，或者想讨论技术问题，欢迎联系：</p>
+                <div class="social-links">
+                    <a href="https://github.com/Cyan256X" class="social-link" target="_blank" title="GitHub">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="mailto:example@example.com" class="social-link" title="电子邮件">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                    <a href="#" class="social-link" title="Twitter">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                </div>
+            </section>
+
+            <!-- 最新动态 -->
+            <section class="section sidebar-section fade-in">
+                <h2 class="section-title">
+                    <i class="fas fa-bell"></i> 最新动态
+                </h2>
+                <div class="update-item">
+                    <p><strong>2024.03.03</strong> - 网站重新设计完成，采用蓝色系主题</p>
+                </div>
+                <div class="update-item">
+                    <p><strong>2024.02.28</strong> - 新增 MusiCalculator 项目</p>
+                </div>
+                <div class="update-item">
+                    <p><strong>2024.02.15</strong> - 开始学习 Three.js 3D 图形</p>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>关于本站</h3>
+                    <p>这是 Cyan256X 的个人博客和项目展示网站，记录学习历程和技术分享。</p>
+                </div>
+                <div class="footer-section">
+                    <h3>快速链接</h3>
+                    <ul class="footer-links">
+                        <li><a href="#home">首页</a></li>
+                        <li><a href="#projects">项目展示</a></li>
+                        <li><a href="#blog">技术博客</a></li>
+                        <li><a href="#about">关于我</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>项目资源</h3>
+                    <ul class="footer-links">
+                        <li><a href="./Musicalculator/">MusiCalculator</a></li>
+                        <li><a href="./hit/">互动游戏集</a></li>
+                        <li><a href="https://github.com/Cyan256X">GitHub 主页</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>技术栈</h3>
+                    <ul class="footer-links">
+                        <li>HTML5 / CSS3</li>
+                        <li>JavaScript ES6+</li>
+                        <li>Git / GitHub</li>
+                        <li>GitHub Pages</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>© 2024 Cyan256X. 保留所有权利。 | 由 GitHub Pages 驱动</p>
+                <p style="margin-top: 0.5rem; font-size: 0.9rem;">
+                    <i class="fas fa-heart" style="color: #ff6b6b;"></i> 用心编码，创造价值
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript 交互 -->
+    <script>
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // 导航栏滚动效果
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 100) {
+                navbar.style.background = 'rgba(30, 58, 138, 0.95)';
+                navbar.style.backdropFilter = 'blur(10px)';
+            } else {
+                navbar.style.background = 'linear-gradient(90deg, var(--primary-blue) 0%, var(--dark-blue) 100%)';
+                navbar.style.backdropFilter = 'none';
+            }
+        });
+
+        // 页面加载动画
+        document.addEventListener('DOMContentLoaded', function() {
+            const fadeElements = document.querySelectorAll('.fade-in');
+            fadeElements.forEach((element, index) => {
+                element.style.animationDelay = `${index * 0.1}s`;
+            });
+        });
+
+        // 控制台欢迎信息
+        console.log('%c👋 欢迎来到 Cyan256X 的个人博客！', 'color: #3b82f6; font-size: 16px; font-weight: bold;');
+        console.log('%c🔗 GitHub: https://github.com/Cyan256X', 'color: #60a5fa;');
+        console.log('%c💡 这是一个响应式设计的个人网站，采用蓝色系主题', 'color: #1e3a8a;');
+    </script>
 </body>
 </html>
